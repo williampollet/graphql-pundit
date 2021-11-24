@@ -55,7 +55,7 @@ module GraphQL
         record = infer_record(@record, root, arguments, context)
         policy = infer_policy(@policy, record, arguments, context)
 
-        policy.new(context[self.class.current_user], record).public_send query
+        policy.new(context[:current_user], record).public_send query
       end
 
       def infer_query(auth_value)
@@ -69,7 +69,7 @@ module GraphQL
         if callable?(record)
           record.call(root, arguments, context)
         elsif record.equal?(nil)
-          root
+          root.object
         else
           record
         end
